@@ -43,6 +43,9 @@ scalacOptions ++= Seq(
 )
 
 // Define JVM options for running your project.
+compileOrder := CompileOrder.JavaThenScala
+test / fork := true
+run / fork := true
 run / javaOptions ++= Seq(
   "-Xms512M", // Initial JVM heap size
   "-Xmx2G", // Maximum JVM heap size

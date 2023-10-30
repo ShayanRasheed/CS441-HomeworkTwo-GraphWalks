@@ -2,7 +2,7 @@ package com.lsc
 
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.graphx._
-import GraphLoader.{getClass, loadGraph}
+import com.lsc.GraphLoader.loadGraph
 import NetGraphAlgebraDefs.{Action, NodeObject}
 import com.typesafe.config.ConfigFactory
 import org.slf4j.LoggerFactory
@@ -25,7 +25,7 @@ object Main {
 
         logger.info(s"Beginning with Vertex: $startNode")
 
-        
+
       case None =>
         logger.warn("MAIN: Graph Failed to load")
     }

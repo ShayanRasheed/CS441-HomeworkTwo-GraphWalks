@@ -4,7 +4,7 @@ import sbt.Keys.libraryDependencies
 ThisBuild / version := "0.1.0"
 
 // Define the Scala version to be used.
-ThisBuild / scalaVersion := "2.12.18"
+ThisBuild / scalaVersion := "2.13.12"
 
 // Define the project name.
 name := "GraphWalks"
@@ -12,7 +12,7 @@ name := "GraphWalks"
 // Define library versions. Adjust the version numbers according to your needs.
 val scalaTestVersion = "3.2.15"
 val typeSafeConfigVersion = "1.4.2"
-val logbackVersion = "1.4.7"
+val logbackVersion = "1.4.0"
 val sfl4sVersion = "2.0.5"
 val graphVizVersion = "0.18.1"
 
@@ -51,6 +51,8 @@ run / javaOptions ++= Seq(
   "-Xmx2G", // Maximum JVM heap size
   "-XX:+UseG1GC" // Use G1 Garbage Collector
 )
+
+scalacOptions ++= Seq("-target:jvm-1.8")
 
 exportJars := true
 

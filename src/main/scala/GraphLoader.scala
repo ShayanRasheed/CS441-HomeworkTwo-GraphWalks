@@ -1,16 +1,18 @@
 package com.lsc
 
 import NetGraphAlgebraDefs.{Action, NodeObject}
+import NetGraphAlgebraDefs.NetGraphComponent
+
 import org.apache.spark.SparkContext
 import org.apache.spark.graphx.Graph
-import java.io.FileInputStream
-import NetGraphAlgebraDefs.NetGraphComponent
 import org.apache.spark.graphx._
 import org.apache.spark.rdd.RDD
+
 import org.slf4j.LoggerFactory
 
 import java.io._
 import java.io.ObjectInputStream
+import java.io.FileInputStream
 import scala.util.{Failure, Success, Try}
 
 object GraphLoader {

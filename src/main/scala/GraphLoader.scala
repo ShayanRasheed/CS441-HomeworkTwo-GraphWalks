@@ -35,7 +35,7 @@ object GraphLoader {
           case node: NodeObject => (node.id.toLong, node)
         })
         val edges: RDD[Edge[Action]] = sc.parallelize(lstOfNetComponents.collect {
-          case action: Action => Edge(action.fromId.toLong, action.toId.toLong, action)
+          case action: Action => Edge(action.fromNode.id.toLong, action.toNode.id.toLong, action)
         })
         logger.info("Returning Graph Object")
         Some(Graph(vertices, edges))

@@ -38,12 +38,40 @@ object Main {
 
             val numValNodes = valuableNodes.size
             logger.info(s"Found $numValNodes valuable nodes")
-            //valuableNodes.foreach(x => println(x))
+            val numAttacks = config.getInt("App.numAttacks")
 
-            val startNode = perturbedGraph.vertices.takeSample(withReplacement = false, 1)(0)._1
-            val result = randomWalk(perturbedGraph, originalGraph, startNode, valuableNodes, List.empty)
+            val startNodes : Array[VertexId] = perturbedGraph.vertices.takeSample(withReplacement = false, numAttacks)
+              .map { case (neighborId, _) => neighborId }
 
-            logger.info(s"THE RESULT IS: $result")
+            val attackResults = startNodes.map { startNode =>
+              randomWalk(perturbedGraph, originalGraph, startNode, valuableNodes, List.empty)
+            }
+
+            logger.info("Attack Results received:")
+            println(attackResults.mkString("Array(", ", ", ")"))
+
+            val matches = attackResults.filter(result => result >= 0)
+            val successfulAttacks = matches.intersect(valuableNodes)
+
+            val numSuccessfulAttacks = successfulAttacks.length
+            val numFailedAttacks = matches.length - numSuccessfulAttacks
+
+            val successRatio = numSuccessfulAttacks.toDouble / numAttacks
+            val failRatio = numFailedAttacks.toDouble / numAttacks
+
+            logger.info("----RESULTS:-----")
+            println(s"Number of attacks: $numAttacks")
+            println(s"Number of successful attacks: $numSuccessfulAttacks")
+            println(s"Number of failed attacks: $numFailedAttacks")
+
+            println("Valuable nodes from original graph:")
+            valuableNodes.foreach(x => println(x))
+
+            println("Successfully identified valuable nodes in perturbed graph")
+            successfulAttacks.foreach(x => println(x))
+
+            println(s"Ratio of successful attacks / total number of attacks: $successRatio")
+            println(s"Ratio of failed attacks / total number of attacks: $failRatio")
 
           case None =>
             logger.warn("MAIN: Graph Failed to load")

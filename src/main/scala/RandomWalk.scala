@@ -6,7 +6,6 @@ import org.apache.spark.SparkContext
 import org.apache.spark.graphx.Graph
 import org.apache.spark.graphx._
 import com.typesafe.config.{Config, ConfigFactory}
-import com.lsc.SimRank
 
 import scala.language.postfixOps
 import scala.util.Random

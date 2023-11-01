@@ -16,7 +16,7 @@ object Main {
   private val logger = LoggerFactory.getLogger(getClass)
 
   def main(args: Array[String]): Unit = {
-    val conf = new SparkConf().setAppName("GraphWalk").setMaster("local[4]")
+    val conf = new SparkConf().setAppName("GraphWalk").setMaster("local[8]")
     val sc = new SparkContext(conf)
 
     val perturbedGraph = loadGraph(config.getString("App.perturbedFilePath"), sc)
@@ -41,7 +41,9 @@ object Main {
             //valuableNodes.foreach(x => println(x))
 
             val startNode = perturbedGraph.vertices.takeSample(withReplacement = false, 1)(0)._1
-            randomWalk(perturbedGraph, originalGraph, startNode, valuableNodes, Set.empty)
+            val result = randomWalk(perturbedGraph, originalGraph, startNode, valuableNodes, List.empty)
+
+            logger.info(s"THE RESULT IS: $result")
 
           case None =>
             logger.warn("MAIN: Graph Failed to load")

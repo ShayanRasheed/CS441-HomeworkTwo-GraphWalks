@@ -2,12 +2,10 @@ package com.lsc
 
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.graphx._
-
 import com.lsc.GraphLoader.loadGraph
 import com.lsc.RandomWalk.randomWalk
-
+import com.lsc.CreateYaml.outputYaml
 import NetGraphAlgebraDefs.{Action, NodeObject}
-
 import com.typesafe.config.ConfigFactory
 import org.slf4j.LoggerFactory
 
@@ -54,24 +52,30 @@ object Main {
             val successfulAttacks = matches.intersect(valuableNodes)
 
             val numSuccessfulAttacks = successfulAttacks.length
-            val numFailedAttacks = matches.length - numSuccessfulAttacks
+            val numFailedAttacks = attackResults.length - numSuccessfulAttacks
 
             val successRatio = numSuccessfulAttacks.toDouble / numAttacks
-            val failRatio = numFailedAttacks.toDouble / numAttacks
+            val failRatio = 1 - successRatio
 
-            logger.info("----RESULTS:-----")
-            println(s"Number of attacks: $numAttacks")
-            println(s"Number of successful attacks: $numSuccessfulAttacks")
-            println(s"Number of failed attacks: $numFailedAttacks")
+            val result1 = s"Number of attacks: $numAttacks"
+            val result2 = s"Number of successful attacks: $numSuccessfulAttacks"
+            val result3 = s"Number of failed attacks: $numFailedAttacks"
 
-            println("Valuable nodes from original graph:")
-            valuableNodes.foreach(x => println(x))
+            val result4 = "Valuable nodes from original graph:"
+            val result5 = valuableNodes.mkString("Array(", ", ", ")")
 
-            println("Successfully identified valuable nodes in perturbed graph")
-            successfulAttacks.foreach(x => println(x))
+            val result6 = "Successfully identified valuable nodes in perturbed graph"
+            val result7 = successfulAttacks.mkString("Array(", ", ", ")")
 
-            println(s"Ratio of successful attacks / total number of attacks: $successRatio")
-            println(s"Ratio of failed attacks / total number of attacks: $failRatio")
+            val result8 = s"Ratio of successful attacks / total number of attacks: $successRatio"
+            val result9 = s"Ratio of failed attacks / total number of attacks: $failRatio"
+
+            val output = List(result1, result2, result3, result4, result5, result6, result7, result8, result9)
+
+            output.foreach{x => println(x)}
+
+            logger.info("Writing output to file...")
+            outputYaml(output)
 
           case None =>
             logger.warn("MAIN: Graph Failed to load")

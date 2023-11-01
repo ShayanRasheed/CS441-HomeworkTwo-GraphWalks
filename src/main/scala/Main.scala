@@ -28,15 +28,20 @@ object Main {
 
         originalGraph match {
           case Some(originalGraph) =>
+//            logger.info("printing valuable data")
+//            originalGraph.vertices.foreach {case (_, nodeObject) => println(nodeObject)}
+
+            val valuableNodes = originalGraph.vertices.filter {
+              case (_, nodeObject) => nodeObject.valuableData }
+              .map { case (vertexId, _) => vertexId }
+              .collect()
+
+            val numValNodes = valuableNodes.size
+            logger.info(s"Found $numValNodes valuable nodes")
+            //valuableNodes.foreach(x => println(x))
+
             val startNode = perturbedGraph.vertices.takeSample(withReplacement = false, 1)(0)._1
-            val Node2 = originalGraph.vertices.takeSample(withReplacement = false, 1)(0)._1
-
-            logger.info(s"Beginning with Vertex: $startNode")
-            logger.info("Calculating Sim Rank Test:")
-
-            val SimRank = new SimRank();
-            val result = SimRank.calculateSimRank(perturbedGraph, originalGraph, startNode, Node2, config.getInt("App.similarityDepth"))
-            println(result)
+            randomWalk(perturbedGraph, originalGraph, startNode, valuableNodes, Set.empty)
 
           case None =>
             logger.warn("MAIN: Graph Failed to load")

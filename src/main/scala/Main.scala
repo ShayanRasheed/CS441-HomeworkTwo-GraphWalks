@@ -14,11 +14,14 @@ object Main {
   private val logger = LoggerFactory.getLogger(getClass)
 
   def main(args: Array[String]): Unit = {
-    val conf = new SparkConf().setAppName("GraphWalk").setMaster("local[8]")
+    val conf = new SparkConf().setAppName("GraphWalk").setMaster("local[4]")
     val sc = new SparkContext(conf)
 
-    val perturbedGraph = loadGraph(config.getString("App.perturbedFilePath"), sc)
-    val originalGraph = loadGraph(config.getString("App.originalFilePath"), sc)
+    val isOnCloud = config.getBoolean("App.isOnCloud")
+    val environment = if (isOnCloud) "Cloud" else "Local"
+
+    val perturbedGraph = loadGraph(config.getString(s"$environment.perturbedFilePath"), sc)
+    val originalGraph = loadGraph(config.getString(s"$environment.originalFilePath"), sc)
 
     perturbedGraph match {
       case Some(perturbedGraph) =>
@@ -75,7 +78,10 @@ object Main {
             output.foreach{x => println(x)}
 
             logger.info("Writing output to file...")
-            outputYaml(output)
+
+            if(environment == "Local") {
+              outputYaml(output)
+            }
 
           case None =>
             logger.warn("MAIN: Graph Failed to load")

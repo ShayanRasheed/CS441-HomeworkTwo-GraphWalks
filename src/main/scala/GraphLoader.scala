@@ -2,17 +2,16 @@ package com.lsc
 
 import NetGraphAlgebraDefs.{Action, NodeObject}
 import NetGraphAlgebraDefs.NetGraphComponent
-
 import org.apache.spark.SparkContext
 import org.apache.spark.graphx.Graph
 import org.apache.spark.graphx._
 import org.apache.spark.rdd.RDD
-
 import org.slf4j.LoggerFactory
 
 import java.io._
 import java.io.ObjectInputStream
 import java.io.FileInputStream
+import java.net.URL
 import scala.util.{Failure, Success, Try}
 
 object GraphLoader {
@@ -21,11 +20,17 @@ object GraphLoader {
     logger.info(s"Loading the NetGraph from $fileName")
 
     Try {
-      val fis = new FileInputStream(fileName)
-      val ois = new ObjectInputStream(fis)
+      val inputStream: InputStream = if (fileName.startsWith("http://") || fileName.startsWith("https://")) {
+        val url = new URL(fileName)
+        url.openStream()
+      } else {
+        new FileInputStream(new File(fileName))
+      }
+
+      val ois = new ObjectInputStream(inputStream)
       val ng = ois.readObject.asInstanceOf[List[NetGraphComponent]]
 
-      fis.close()
+      inputStream.close()
       ois.close()
 
       ng

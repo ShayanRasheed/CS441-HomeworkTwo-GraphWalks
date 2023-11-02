@@ -16,7 +16,7 @@ object CreateYaml {
     val yaml = new Yaml(dumperOptions)
     val output = result.asJava
 
-    val writer = new BufferedWriter(new FileWriter(config.getString("App.outputFilePath")))
+    val writer = new BufferedWriter(new FileWriter(config.getString("Local.outputFilePath")))
     yaml.dump(output, writer)
     writer.close()
   }

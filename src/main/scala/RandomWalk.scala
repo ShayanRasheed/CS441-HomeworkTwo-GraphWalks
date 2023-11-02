@@ -1,7 +1,7 @@
 package com.lsc
 
 import org.slf4j.LoggerFactory
-import NetGraphAlgebraDefs.{Action, NodeObject}
+import com.lsc.{Action, NodeObject}
 import org.apache.spark.SparkContext
 import org.apache.spark.graphx.Graph
 import org.apache.spark.graphx._

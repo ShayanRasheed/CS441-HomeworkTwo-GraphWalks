@@ -1,11 +1,12 @@
 package com.lsc
 
 import org.apache.spark.{SparkConf, SparkContext}
+import org.apache.spark.sql.SparkSession
 import org.apache.spark.graphx._
 import com.lsc.GraphLoader.loadGraph
 import com.lsc.RandomWalk.randomWalk
 import com.lsc.CreateYaml.outputYaml
-import NetGraphAlgebraDefs.{Action, NodeObject}
+import com.lsc.{Action, NodeObject}
 import com.typesafe.config.ConfigFactory
 import org.slf4j.LoggerFactory
 
@@ -16,6 +17,9 @@ object Main {
   def main(args: Array[String]): Unit = {
     val conf = new SparkConf().setAppName("GraphWalk").setMaster("local[4]")
     val sc = new SparkContext(conf)
+
+//    val spark = SparkSession.builder().appName("GraphSim").getOrCreate()
+//    val sc = spark.sparkContext
 
     val isOnCloud = config.getBoolean("App.isOnCloud")
     val environment = if (isOnCloud) "Cloud" else "Local"

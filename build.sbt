@@ -27,6 +27,7 @@ lazy val commonDependencies = Seq(
   "io.circe" %% "circe-yaml" % "0.14.2",
   "org.apache.spark" %% "spark-core" % "3.4.1",
   "org.apache.spark" %% "spark-graphx" % "3.4.1",
+  "org.apache.spark" %% "spark-sql" % "3.3.2",
   "org.yaml" % "snakeyaml" % "2.0"
 )
 

@@ -1,8 +1,5 @@
 package com.lsc
 
-import com.lsc.graphComponent
-import com.lsc.{NodeObject, Action}
-
 import org.apache.spark.SparkContext
 import org.apache.spark.graphx.Graph
 import org.apache.spark.graphx._

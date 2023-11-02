@@ -4,7 +4,7 @@ import sbt.Keys.libraryDependencies
 ThisBuild / version := "0.1.0"
 
 // Define the Scala version to be used.
-ThisBuild / scalaVersion := "2.13.12"
+ThisBuild / scalaVersion := "2.12.15"
 
 // Define the project name.
 name := "GraphWalks"

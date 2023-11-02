@@ -6,7 +6,6 @@ import org.apache.spark.graphx._
 import com.lsc.GraphLoader.loadGraph
 import com.lsc.RandomWalk.randomWalk
 import com.lsc.CreateYaml.outputYaml
-import com.lsc.{Action, NodeObject}
 import com.typesafe.config.ConfigFactory
 import org.slf4j.LoggerFactory
 

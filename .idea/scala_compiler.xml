@@ -5,9 +5,6 @@
       <option name="compileOrder" value="JavaThenScala" />
       <option name="deprecationWarnings" value="true" />
       <option name="featureWarnings" value="true" />
-      <parameters>
-        <parameter value="-target:jvm-1.8" />
-      </parameters>
     </profile>
   </component>
 </project>

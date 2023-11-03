@@ -35,7 +35,7 @@ class SimRank {
       if (currentDepth == 0) {
         List(node) // At the specified depth, return the current node
       } else {
-        val neighbors = graph.collectNeighborIds(EdgeDirection.Out).lookup(node).headOption.getOrElse(Array.empty[VertexId])
+        val neighbors = graph.collectNeighborIds(EdgeDirection.Either).lookup(node).headOption.getOrElse(Array.empty[VertexId])
         neighbors.flatMap(neighbor => findNodes(neighbor, currentDepth - 1)).toList
       }
     }

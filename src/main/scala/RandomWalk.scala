@@ -29,21 +29,24 @@ object RandomWalk {
       logger.trace(s"Remaining walks: $remainingWalks")
       val visitedNodes = visited :+ node
 
+      // Check if any valuable nodes are similar to the current node
       val similarNodes = valuableNodes.filter { nodeId =>
         val similarity = simRank.calculateSimRank(perturbedGraph, originalGraph, node, nodeId, config.getInt("App.similarityDepth"))
         logger.info(s"Similarity between nodes $node and $nodeId is $similarity")
         similarity > config.getDouble("App.similarityThreshold")
       }
 
+      // If any valuable nodes are similar, return the current node
       if(!similarNodes.isEmpty) {
-        val randomIndex = Random.nextInt(similarNodes.length)
-        (similarNodes(randomIndex), visitedNodes)
+        (node, visitedNodes)
       }
+        // Otherwise, continue the walk
       else {
         val unvisitedNeighbors = RandomWalk.unvisitedNeighbors(perturbedGraph, node, visitedNodes)
         logger.info(s"Unvisited Neighbors found: ${unvisitedNeighbors.mkString("Array(", ", ", ")")}")
 
         if(!unvisitedNeighbors.isEmpty && remainingWalks > 0) {
+          // Pick a random unvisited neighbor to check next
           val randomIndex = Random.nextInt(unvisitedNeighbors.length)
           traverse(unvisitedNeighbors(randomIndex), visitedNodes, remainingWalks - 1)
         }
@@ -54,6 +57,8 @@ object RandomWalk {
     }
 
     val result = traverse(startNode, List.empty, maxNumWalks)
+    // Once initial walk is completed, return if a match was found
+    // Otherwise, repeat walk
     result match{
       case (-1, myList) =>
         val unvisitedNeighbors = RandomWalk.unvisitedNeighbors(perturbedGraph, startNode, myList)
@@ -68,6 +73,8 @@ object RandomWalk {
     }
   }
 
+  // UNVISITED NEIGHBORS
+  // Returns all nodes connected to a specified node that are not already in the set of visited nodes
   def unvisitedNeighbors(graph: Graph[NodeObject, Action], node: VertexId, visitedNodes: List[VertexId]): Array[VertexId] = {
     val neighbors = graph.collectNeighbors(EdgeDirection.Either).lookup(node)
     val unvisitedNeighbors = neighbors.head.filter { case (neighborId, _) =>

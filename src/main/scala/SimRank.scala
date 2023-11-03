@@ -14,7 +14,9 @@ class SimRank {
     logger.trace("In Sim Rank:")
 
     val neighbors1 = findNeighbors(graph1, node1, depth, List.empty)
+    logger.info(s"Neighbors found for node $node1: ${neighbors1.toString()}")
     val neighbors2 = findNeighbors(graph2, node2, depth, List.empty)
+    logger.info(s"Neighbors found for node $node2: ${neighbors2.toString()}")
 
     val commonNeighbors = neighbors1.intersect(neighbors2)
     val totalUniqueNeighbors = (neighbors1 ++ neighbors2).distinct.size
@@ -29,19 +31,15 @@ class SimRank {
   }
 
   private def findNeighbors(graph: Graph[NodeObject, Action], node: VertexId, depth: Int, visitedNodes: List[VertexId]) : List[VertexId] = {
-    val updatedVisitedNodes = visitedNodes :+ node
-
-    if (depth > 0) {
-      val neighbors = graph.collectNeighbors(EdgeDirection.Either).lookup(node)
-      val unvisitedNeighbors = neighbors.head.filter { case (neighborId, _) =>
-        !visitedNodes.contains(neighborId)
+    def findNodes(node: VertexId, currentDepth: Int): List[VertexId] = {
+      if (currentDepth == 0) {
+        List(node) // At the specified depth, return the current node
+      } else {
+        val neighbors = graph.collectNeighborIds(EdgeDirection.Out).lookup(node).headOption.getOrElse(Array.empty[VertexId])
+        neighbors.flatMap(neighbor => findNodes(neighbor, currentDepth - 1)).toList
       }
-
-      unvisitedNeighbors.foldLeft(updatedVisitedNodes) { (acc, neighbor) =>
-        findNeighbors(graph, neighbor._1, depth - 1, acc)
-      }
-    } else {
-      updatedVisitedNodes
     }
+
+    findNodes(node, depth).distinct
   }
 }

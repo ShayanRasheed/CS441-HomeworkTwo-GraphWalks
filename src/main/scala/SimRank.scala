@@ -5,6 +5,9 @@ import org.apache.spark.graphx.Graph
 import org.apache.spark.graphx._
 import scala.language.postfixOps
 
+// SIMRANK
+// Performs a simrank algorithm to find the similarity between two nodes from different graphs
+// based on how many nearby nodes are the same
 class SimRank {
   private val logger = LoggerFactory.getLogger(getClass)
   def calculateSimRank(graph1: Graph[NodeObject, Action], graph2: Graph[NodeObject, Action], node1: VertexId, node2: VertexId, depth: Int): Double = {

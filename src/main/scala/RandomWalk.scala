@@ -6,6 +6,7 @@ import org.apache.spark.graphx.Graph
 import org.apache.spark.graphx._
 import com.typesafe.config.{Config, ConfigFactory}
 
+import scala.annotation.tailrec
 import scala.language.postfixOps
 import scala.util.Random
 
@@ -14,10 +15,13 @@ object RandomWalk {
   private val config: Config = ConfigFactory.load()
   private val simRank = new SimRank()
 
+  // RANDOM WALK
+  // Performs a random walk through the perturbed graph in order to find valuable nodes
   def randomWalk(perturbedGraph: Graph[NodeObject, Action], originalGraph: Graph[NodeObject, Action], startNode: VertexId, valuableNodes: Array[VertexId], initialVisited: List[VertexId]): VertexId = {
     logger.trace(s"Beginning Random Walk with Vertex: $startNode")
     val maxNumWalks = config.getInt("App.maxNumWalks")
 
+    @tailrec
     def traverse(node: VertexId, visited: List[VertexId], remainingWalks: Int): VertexId = {
       val visitedNodes = visited :+ startNode
 

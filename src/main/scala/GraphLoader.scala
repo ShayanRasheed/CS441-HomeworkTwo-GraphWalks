@@ -13,6 +13,10 @@ import scala.io.Source
 
 object GraphLoader {
   private val logger = LoggerFactory.getLogger(getClass)
+
+  // LOAD GRAPH
+  // Creates graph object from text file produced by ngsConverter
+  // Can load graph from local file as well as s3 bucket
   def loadGraph(fileName: String, sc: SparkContext): Option[Graph[NodeObject, Action]] = {
     logger.info(s"Loading the NetGraph from $fileName")
 

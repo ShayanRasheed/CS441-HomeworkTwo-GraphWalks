@@ -6,6 +6,9 @@ import scala.jdk.CollectionConverters._
 
 import java.io.{File, FileWriter, BufferedWriter}
 import com.typesafe.config.{Config, ConfigFactory}
+
+// CREATE YAML
+// Outputs a yaml file with the statistics produced by the random walks
 object CreateYaml {
   private val config = ConfigFactory.load()
   def outputYaml(result: List[String]): Unit = {

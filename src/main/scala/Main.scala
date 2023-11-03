@@ -14,9 +14,11 @@ object Main {
   private val logger = LoggerFactory.getLogger(getClass)
 
   def main(args: Array[String]): Unit = {
+    // SPARK SETUP FOR LOCAL EXECUTION
     val conf = new SparkConf().setAppName("GraphWalk").setMaster("local[4]")
     val sc = new SparkContext(conf)
 
+    // SPARK SETUP FOR AWS
 //    val spark = SparkSession.builder().appName("GraphSim").getOrCreate()
 //    val sc = spark.sparkContext
 
@@ -32,18 +34,17 @@ object Main {
 
         originalGraph match {
           case Some(originalGraph) =>
-//            logger.info("printing valuable data")
-//            originalGraph.vertices.foreach {case (_, nodeObject) => println(nodeObject)}
 
             val valuableNodes = originalGraph.vertices.filter {
               case (_, nodeObject) => nodeObject.valuableData }
               .map { case (vertexId, _) => vertexId }
               .collect()
 
-            val numValNodes = valuableNodes.size
+            val numValNodes = valuableNodes.length
             logger.info(s"Found $numValNodes valuable nodes")
             val numAttacks = config.getInt("App.numAttacks")
 
+            // Starting nodes for each walk are randomly selected
             val startNodes : Array[VertexId] = perturbedGraph.vertices.takeSample(withReplacement = false, numAttacks)
               .map { case (neighborId, _) => neighborId }
 

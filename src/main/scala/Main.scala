@@ -49,13 +49,18 @@ object Main {
               .map { case (neighborId, _) => neighborId }
 
             val attackResults = startNodes.map { startNode =>
-              randomWalk(perturbedGraph, originalGraph, startNode, valuableNodes, List.empty)
+              randomWalk(perturbedGraph, originalGraph, startNode, valuableNodes)
             }
 
             logger.info("Attack Results received:")
             println(attackResults.mkString("Array(", ", ", ")"))
 
-            val matches = attackResults.filter(result => result >= 0)
+            val matches = attackResults.filter(result => result._1 >= 0)
+            val nodesSearched = attackResults.map(result => result._2)
+            val first = "\n-----RESULTS-----"
+            val result = "All nodes searched throughout all walks:"
+            val listNodes = nodesSearched.map(_.mkString(",")).mkString("\n")
+
             val successfulAttacks = matches.intersect(valuableNodes)
 
             val numSuccessfulAttacks = successfulAttacks.length
@@ -77,7 +82,7 @@ object Main {
             val result8 = s"Ratio of successful attacks / total number of attacks: $successRatio"
             val result9 = s"Ratio of failed attacks / total number of attacks: $failRatio"
 
-            val output = List(result1, result2, result3, result4, result5, result6, result7, result8, result9)
+            val output = List(first, result, listNodes, result1, result2, result3, result4, result5, result6, result7, result8, result9)
 
             output.foreach{x => println(x)}
 

@@ -14,8 +14,6 @@ class SimRank {
     logger.trace("In Sim Rank:")
 
     val neighbors1 = findNeighbors(graph1, node1, depth, List.empty)
-    neighbors1.foreach(x => println(x))
-
     val neighbors2 = findNeighbors(graph2, node2, depth, List.empty)
 
     val commonNeighbors = neighbors1.intersect(neighbors2)

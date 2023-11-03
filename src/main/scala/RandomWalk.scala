@@ -17,6 +17,8 @@ object RandomWalk {
 
   // RANDOM WALK
   // Performs a random walk through the perturbed graph in order to find valuable nodes
+  // The length of the walk is determined by the 'maxNumWalks' parameter
+  // If the first walk attempt fails to find a match, it will repeat the walk while avoiding any nodes it already visited
   def randomWalk(perturbedGraph: Graph[NodeObject, Action], originalGraph: Graph[NodeObject, Action], startNode: VertexId, valuableNodes: Array[VertexId]): (VertexId, List[VertexId]) = {
     logger.trace(s"Beginning Random Walk with Vertex: $startNode")
     val maxNumWalks = config.getInt("App.maxNumWalks")

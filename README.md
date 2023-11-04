@@ -64,6 +64,7 @@ which specific nodes were found and which were searched along each walk.
    You can also submit the job via spark-submit
 
 ## Deployment Video
+Here is a [video demonstrating deployment of the program on AWS](https://youtu.be/CcFsaMTlvTk) 
 
 ## Dependencies
 

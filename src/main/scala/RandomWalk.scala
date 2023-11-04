@@ -21,12 +21,13 @@ object RandomWalk {
   // If the first walk attempt fails to find a match, it will repeat the walk while avoiding any nodes it already visited
   def randomWalk(perturbedGraph: Graph[NodeObject, Action], originalGraph: Graph[NodeObject, Action], startNode: VertexId, valuableNodes: Array[VertexId]): (VertexId, List[VertexId]) = {
     logger.trace(s"Beginning Random Walk with Vertex: $startNode")
+    println(s"Starting walk on Node: $startNode")
     val maxNumWalks = config.getInt("App.maxNumWalks")
 
     @tailrec
     def traverse(node: VertexId, visited: List[VertexId], remainingWalks: Int): (VertexId, List[VertexId]) = {
       logger.trace(s"Traversing Node: $node")
-      logger.trace(s"Remaining walks: $remainingWalks")
+      println(s"Traversing Node: $node")
       val visitedNodes = visited :+ node
 
       // Check if any valuable nodes are similar to the current node

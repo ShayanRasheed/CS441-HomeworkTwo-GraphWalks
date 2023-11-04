@@ -5,7 +5,7 @@
 2. [Setup Guide](#setup-guide)
 3. [Deployment Video](#deployment-video)
 4. [Dependencies](#dependencies)
-5. 
+5. [Code Structure and Logic](#code-structure-and-logic)
 
 ## Introduction
 In this project, random walks are performed on a graph structure that 
@@ -86,6 +86,27 @@ used by the main program. The file is used to create a graphX graph object that 
 two RDDs for the vertices and edges.
 
 ### Performing multiple random walks:
+After the graph is loaded, the program will begin to perfrom random walks on the graph.
+The starting node is chosen at random and will also choose a neighboring node to search at random.
+This will continue until either a valuable node match is found or until the length of the walk has
+exceeded the number of searches defined in application.conf
+
+For each node that the walk goes through in the search, it will check the similarity between
+that node and all the valuable nodes from the original graph. This is done using
+**SimRank** which is a class that computes a similarity value between two nodes 
+by how many neighbors they share
+
+If a walk fails to find a valuable node, the walk will begin again while avoiding any nodes it
+has already searched previously.
+
+### Outputting Results:
+Finally, the results of each walk will be printed, including details about
+which nodes were searched on each walk, which nodes were returned by
+each walk as a match, how many attacks succeeded and failed, and the ratios
+of successful and failed attacks to total attacks
+
+If the program is executed locally, these details are also output as a yaml file to the path
+set in application.conf
 
 
 

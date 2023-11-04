@@ -15,12 +15,12 @@ object Main {
 
   def main(args: Array[String]): Unit = {
     // SPARK SETUP FOR LOCAL EXECUTION
-    val conf = new SparkConf().setAppName("GraphWalks").setMaster("local[4]")
-    val sc = new SparkContext(conf)
+//    val conf = new SparkConf().setAppName("GraphWalks").setMaster("local[4]")
+//    val sc = new SparkContext(conf)
 
     // SPARK SETUP FOR AWS
-//    val spark = SparkSession.builder().appName("GraphWalks").getOrCreate()
-//    val sc = spark.sparkContext
+    val spark = SparkSession.builder().appName("GraphWalks").getOrCreate()
+    val sc = spark.sparkContext
 
     val isOnCloud = config.getBoolean("App.isOnCloud")
     val environment = if (isOnCloud) "Cloud" else "Local"

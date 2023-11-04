@@ -32,7 +32,7 @@ class SimRank {
 
   private def findNeighbors(graph: Graph[NodeObject, Action], node: VertexId, depth: Int, visitedNodes: List[VertexId]) : List[VertexId] = {
     def findNodes(node: VertexId, currentDepth: Int): List[VertexId] = {
-      if (currentDepth <= 0) {
+      if (currentDepth == 0) {
         List(node) // At the specified depth, return the current node
       } else {
         val neighbors = graph.collectNeighborIds(EdgeDirection.Either).lookup(node).headOption.getOrElse(Array.empty[VertexId])
